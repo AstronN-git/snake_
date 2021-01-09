@@ -18,6 +18,10 @@ public class SnakeGame extends AudGameWindow{
 
     private final List<GameItem> wall = new ArrayList<>();
 
+    private final Grid grid;
+
+    private final boolean TOGGLE_GRID = true; // TOGGLE GRID
+
     @Override
     public void paintGame(AudGraphics g) {
         g.setColor(AudColor.WHITE);
@@ -30,6 +34,8 @@ public class SnakeGame extends AudGameWindow{
         }
 
         apple.draw(g);
+
+        if (TOGGLE_GRID) grid.draw(g);
     }
 
     @Override
@@ -99,6 +105,8 @@ public class SnakeGame extends AudGameWindow{
             wall.add(new Brick(0, i));
             wall.add(new Brick(width-1, i));
         }
+
+        grid = new Grid(width, height);
 
         createNewApple();
     }
