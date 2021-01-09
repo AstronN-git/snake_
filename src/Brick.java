@@ -1,5 +1,5 @@
 public class Brick extends GameItem{
-    private AudColor color = AudColor.lightGray;
+    private final AudColor color = AudColor.lightGray;
 
     public Brick(int x, int y) {
         super(x, y);

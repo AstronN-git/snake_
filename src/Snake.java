@@ -4,9 +4,10 @@ import java.util.List;
 public class Snake {
     private         List<Point> points;
 
-    private final   AudColor    color = AudColor.blue;
-    private         Direction   nextDirection = Direction.RIGHT;
-    private         Direction   lastDirection = Direction.RIGHT;
+    private final   AudColor    color           = AudColor.blue;
+    private final   AudColor    headColor       = AudColor.green;
+    private         Direction   nextDirection   = Direction.RIGHT;
+    private         Direction   lastDirection   = Direction.RIGHT;
 
     public enum Direction {
         RIGHT, LEFT, UP, DOWN
@@ -29,12 +30,14 @@ public class Snake {
             g.setColor(color);
             g.fillRect(p_.getX() * SnakeGame.SQUARE_SIZE, p_.getY() * SnakeGame.SQUARE_SIZE, SnakeGame.SQUARE_SIZE, SnakeGame.SQUARE_SIZE);
         }
+        g.setColor(headColor);
+        g.fillRect(points.get(0).getX() * SnakeGame.SQUARE_SIZE, points.get(0).getY() * SnakeGame.SQUARE_SIZE, SnakeGame.SQUARE_SIZE, SnakeGame.SQUARE_SIZE);
     }
 
     public void step() {
         List<Point> sublist;
         try {
-            sublist = points.subList(0, points.size()-2);
+            sublist = points.subList(0, points.size()-1);
         } catch (IllegalArgumentException e) {
             sublist = new ArrayList<>();
         }
@@ -93,7 +96,31 @@ public class Snake {
 
     public boolean collidesWithSelf () {
         for (int i = 1; i < points.size(); i++) {
-            if (points.get(i).getX() == points.get(0).getX() && points.get(i).getY() == points.get(0).getY()) return true;
+            if (points.get(i).getX() == points.get(0).getX() && points.get(i).getY() == points.get(0).getY()) {
+                return true;
+            }
         } return false;
+    }
+
+    public void grow() {
+        List<Point> temp = points;
+        Point headPoint = points.get(0);
+        points = new ArrayList<>();
+        switch(nextDirection) {
+            case RIGHT:
+                points.add(new Point(headPoint.getX() + 1, headPoint.getY()));
+                break;
+            case LEFT:
+                points.add(new Point(headPoint.getX() - 1, headPoint.getY()));
+                break;
+            case UP:
+                points.add(new Point(headPoint.getX(), headPoint.getY() - 1));
+                break;
+            case DOWN:
+                points.add(new Point(headPoint.getX(), headPoint.getY() + 1));
+                break;
+        }
+
+        points.addAll(temp);
     }
 }
